@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>لوحة التحكم | مركز التجميل</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="app-header">
+    <h1>مركز ليزان للتجميل
+    </h1>
+    <div class="user-info">
+      <span id="headerRole" class="role-badge">—</span>
+      <span id="headerEmail">—</span>
+      <a href="login.html" class="btn btn-sm btn-outline" id="btnLogout">خروج</a>
+    </div>
+  </header>
+
+  <nav class="desktop-nav">
+    <a href="index.html" class="active">لوحة التحكم</a>
+    <a href="appointments.html" id="navAppointments">الحجوزات</a>
+    <a href="clients.html" id="navClients">العملاء</a>
+    <a href="inventory.html" id="navInventory">المخزون</a>
+    <a href="messages.html">الرسائل</a>
+  </nav>
+
+  <main class="main-content">
+    <h2 class="page-title">لوحة التحكم</h2>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="number" id="statToday">0</div>
+        <div class="label">جلسات اليوم</div>
+      </div>
+      <div class="stat-card">
+        <div class="number" id="statTomorrow">0</div>
+        <div class="label">جلسات الغد</div>
+      </div>
+      <div class="stat-card success">
+        <div class="number" id="statMonth">0</div>
+        <div class="label">مكتمل هذا الشهر</div>
+      </div>
+      <div class="stat-card warning">
+        <div class="number" id="statLowStock">0</div>
+        <div class="label">منخفض المخزون</div>
+      </div>
+      <div class="stat-card">
+        <div class="number" id="statWeek">0</div>
+        <div class="label">جلسات هذا الأسبوع</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">جلسات اليوم</div>
+      <div id="todayList"></div>
+      <div id="todayEmpty" class="empty-state hide">لا توجد جلسات اليوم</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">جلسات الغد</div>
+      <div id="tomorrowList"></div>
+      <div id="tomorrowEmpty" class="empty-state hide">لا توجد جلسات غداً</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">جلسات هذا الأسبوع</div>
+      <div id="weekList"></div>
+      <div id="weekEmpty" class="empty-state hide">لا توجد جلسات هذا الأسبوع</div>
+    </div>
+
+    <div class="card" id="cardAlerts">
+      <div class="card-title">تنبيهات</div>
+      <div id="alertsList"></div>
+      <div id="alertsEmpty" class="empty-state hide">لا توجد تنبيهات</div>
+    </div>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="index.html" class="active">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+      الرئيسية
+    </a>
+    <a href="appointments.html">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
+      الحجوزات
+    </a>
+    <a href="clients.html">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+      العملاء
+    </a>
+    <a href="inventory.html">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1 0-2 .9-2 2v3.01c0 .72.43 1.34 1 1.69V20c0 1.1 1.1 2 2 2h14c.9 0 2-.9 2-2V8.7c.57-.35 1-.97 1-1.69V4c0-1.1-1-2-2-2zm-5 12H9v-2h6v2zm5-7H4V4h16v3z"/></svg>
+      المخزون
+    </a>
+    <a href="messages.html">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+      الرسائل
+    </a>
+  </nav>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="firebase/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

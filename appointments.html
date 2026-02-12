@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>الحجوزات | مركز التجميل</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="app-header">
+    <h1>مركز التجميل</h1>
+    <div class="user-info">
+      <span id="headerRole" class="role-badge">—</span>
+      <a href="login.html" class="btn btn-sm btn-outline" id="btnLogout">خروج</a>
+    </div>
+  </header>
+
+  <nav class="desktop-nav">
+    <a href="index.html">لوحة التحكم</a>
+    <a href="appointments.html" class="active">الحجوزات</a>
+    <a href="clients.html">العملاء</a>
+    <a href="inventory.html">المخزون</a>
+    <a href="messages.html">الرسائل</a>
+  </nav>
+
+  <main class="main-content">
+    <h2 class="page-title">الحجوزات والجلسات</h2>
+
+    <div class="view-tabs mb-2">
+      <button type="button" class="view-tab active" data-view="all">كل الحجوزات</button>
+      <button type="button" class="view-tab" data-view="today">جلسات اليوم</button>
+      <button type="button" class="view-tab" data-view="tomorrow">جلسات الغد</button>
+    </div>
+
+    <div class="card">
+      <div class="flex justify-between flex-wrap gap-1 mb-2">
+        <div class="flex gap-1 flex-wrap align-items-center">
+          <span id="dateFilterWrap">
+            <input type="date" id="filterDate" class="form-control" style="max-width: 160px;">
+          </span>
+          <select id="filterStatus" class="form-control" style="max-width: 130px;">
+            <option value="">كل الحالة</option>
+            <option value="scheduled">مجدول</option>
+            <option value="completed">مكتمل</option>
+            <option value="cancelled">ملغى</option>
+          </select>
+          <select id="filterService" class="form-control" style="max-width: 130px;">
+            <option value="">كل الخدمات</option>
+            <option value="Laser">Laser</option>
+            <option value="Botox">Botox</option>
+            <option value="Filler">Filler</option>
+            <option value="Skin Care">Skin Care</option>
+            <option value="Custom Service">Custom Service</option>
+          </select>
+          <input type="search" id="searchClient" class="form-control" placeholder="بحث بالعميل..." style="max-width: 160px;">
+          <button type="button" class="btn btn-primary btn-sm" id="btnFilter">عرض</button>
+        </div>
+        <button type="button" class="btn btn-primary" id="btnAddAppointment">+ حجز جديد</button>
+      </div>
+      <div id="appointmentsList"></div>
+      <div id="appointmentsEmpty" class="empty-state hide">لا توجد حجوزات</div>
+      <div id="appointmentsLoading" class="loading hide">
+        <div class="spinner"></div>
+        جاري التحميل...
+      </div>
+    </div>
+  </main>
+
+  <div class="overlay" id="modalAppointment">
+    <div class="modal">
+      <h3 id="modalTitle">حجز جديد</h3>
+      <form id="formAppointment">
+        <input type="hidden" id="appointmentId">
+        <div class="form-group">
+          <label for="appClient">العميل *</label>
+          <select id="appClient" class="form-control" required></select>
+        </div>
+        <div class="form-group">
+          <label for="appService">نوع الخدمة *</label>
+          <select id="appService" class="form-control" required>
+            <option value="Laser">Laser</option>
+            <option value="Botox">Botox</option>
+            <option value="Filler">Filler</option>
+            <option value="Skin Care">Skin Care</option>
+            <option value="Custom Service">Custom Service</option>
+          </select>
+        </div>
+        <div class="form-group" id="groupSessions">
+          <label>الجلسات (تاريخ ووقت لكل جلسة) *</label>
+          <div id="sessionsList"></div>
+          <button type="button" class="btn btn-outline btn-sm mt-1" id="btnAddSession">+ إضافة جلسة أخرى</button>
+        </div>
+        <div class="form-group" id="groupDoctor">
+          <label for="appDoctor">الطبيب</label>
+          <select id="appDoctor" class="form-control"></select>
+        </div>
+        <div class="form-group" id="groupStatus">
+          <label for="appStatus">الحالة</label>
+          <select id="appStatus" class="form-control">
+            <option value="scheduled">مجدول</option>
+            <option value="completed">مكتمل</option>
+            <option value="cancelled">ملغى</option>
+          </select>
+        </div>
+        <div class="flex gap-1 mt-2">
+          <button type="submit" class="btn btn-primary">حفظ</button>
+          <button type="button" class="btn btn-outline" id="btnCancelModal">إلغاء</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a href="index.html">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+      الرئيسية
+    </a>
+    <a href="appointments.html" class="active">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
+      الحجوزات
+    </a>
+    <a href="clients.html">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+      العملاء
+    </a>
+    <a href="inventory.html">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1 0-2 .9-2 2v3.01c0 .72.43 1.34 1 1.69V20c0 1.1 1.1 2 2 2h14c.9 0 2-.9 2-2V8.7c.57-.35 1-.97 1-1.69V4c0-1.1-1-2-2-2zm-5 12H9v-2h6v2zm5-7H4V4h16v3z"/></svg>
+      المخزون
+    </a>
+    <a href="messages.html">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+      الرسائل
+    </a>
+  </nav>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
+  <script src="firebase/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/appointments.js"></script>
+</body>
+</html>

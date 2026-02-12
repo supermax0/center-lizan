@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>تسجيل الدخول | مركز التجميل</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="login-page">
+    <div class="login-box">
+      <div class="logo-line"></div>
+      <h1>مركز التجميل</h1>
+      <p class="text-muted text-small" style="text-align: center; margin-bottom: 1.5rem;">تسجيل الدخول للإدارة</p>
+
+      <div id="loginError" class="alert alert-danger hide"></div>
+      <div id="loginSuccess" class="alert alert-success hide"></div>
+      <div id="alreadyLoggedIn" class="alert alert-info hide" style="margin-bottom: 1rem;">
+        لديك جلسة نشطة. <a href="index.html" id="linkToDashboard">اذهب للوحة التحكم</a>
+      </div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email">البريد الإلكتروني</label>
+          <input type="email" id="email" class="form-control" placeholder="admin@center.com" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="password">كلمة المرور</label>
+          <input type="password" id="password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="btnLogin">دخول</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="firebase/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/toast.js"></script>
+  <script>
+    (function () {
+      const form = document.getElementById('loginForm');
+      const email = document.getElementById('email');
+      const password = document.getElementById('password');
+      const btnLogin = document.getElementById('btnLogin');
+      const loginError = document.getElementById('loginError');
+      const loginSuccess = document.getElementById('loginSuccess');
+
+      function showError(msg) {
+        loginSuccess.classList.add('hide');
+        loginError.textContent = msg;
+        loginError.classList.remove('hide');
+      }
+      function showSuccess(msg) {
+        loginError.classList.add('hide');
+        loginSuccess.textContent = msg;
+        loginSuccess.classList.remove('hide');
+      }
+      function hideAlerts() {
+        loginError.classList.add('hide');
+        loginSuccess.classList.add('hide');
+      }
+
+      auth.init().then(function (user) {
+        if (user) {
+          document.getElementById('loginForm').classList.add('hide');
+          document.getElementById('alreadyLoggedIn').classList.remove('hide');
+          return;
+        }
+      });
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        hideAlerts();
+        btnLogin.disabled = true;
+        btnLogin.textContent = 'جاري الدخول...';
+        try {
+          await auth.login(email.value.trim(), password.value);
+          document.getElementById('loginForm').classList.add('hide');
+          loginSuccess.innerHTML = 'تم تسجيل الدخول بنجاح. <a href="index.html" class="btn btn-primary mt-1" style="display: inline-block;">اذهب للوحة التحكم</a>';
+          loginSuccess.classList.remove('hide');
+          loginError.classList.add('hide');
+        } catch (err) {
+          let msg = 'فشل تسجيل الدخول. تحقق من البريد وكلمة المرور.';
+          if (err.code === 'auth/user-not-found') msg = 'لا يوجد حساب بهذا البريد.';
+          else if (err.code === 'auth/wrong-password') msg = 'كلمة مرور غير صحيحة.';
+          else if (err.code === 'auth/invalid-email') msg = 'بريد إلكتروني غير صالح.';
+          showError(msg);
+          toast(msg, 'error');
+        }
+        btnLogin.disabled = false;
+        btnLogin.textContent = 'دخول';
+      });
+    })();
+  </script>
+</body>
+</html>

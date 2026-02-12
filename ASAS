@@ -1,0 +1,276 @@
+PROMPT – Beauty Center Management System
+
+(HTML + CSS + JS + Firebase Firestore)
+
+🎯 الهدف
+
+أنشئ نظام ويب احترافي لإدارة مركز تجميل باستخدام:
+
+HTML
+
+CSS (Modern UI)
+
+JavaScript (Vanilla)
+
+Firebase Firestore
+
+Firebase Authentication
+
+Firebase Cloud Functions (للتذكير)
+
+النظام يجب أن يكون جاهز للاستخدام التجاري وليس Demo.
+
+🧱 TECH STACK (إجباري)
+
+Frontend: HTML5 + CSS3 + JavaScript ES6
+
+Backend-as-a-Service: Firebase
+
+Firestore (Database)
+
+Authentication
+
+Cloud Functions
+
+Cloud Scheduler
+
+No frameworks (لا React ولا Vue)
+
+👥 USER ROLES
+1. Admin
+
+إدارة كل شيء
+
+2. Doctor / Specialist
+
+عرض جلساته فقط
+
+3. Reception
+
+إضافة حجوزات
+
+4. Inventory Manager
+
+المخزون
+
+5. Client (اختياري)
+
+عرض مواعيده القادمة
+
+📅 APPOINTMENTS & SESSIONS
+خصائص الجلسة:
+
+clientId
+
+serviceType (Laser, Botox, Filler…)
+
+sessionDate (Timestamp)
+
+sessionTime
+
+doctorId
+
+status:
+
+scheduled
+
+completed
+
+cancelled
+
+reminderSent (Boolean)
+
+أنواع الخدمات:
+
+Laser
+
+Botox
+
+Filler
+
+Skin Care
+
+Custom Service
+
+⏰ REMINDER SYSTEM (مهم جدًا)
+المطلوب:
+
+إرسال تذكير تلقائي للجلسات التي موعدها غدًا
+
+يتم التنفيذ:
+
+مرة واحدة يوميًا (الساعة 9 صباحًا)
+
+التذكير يتم عبر:
+
+Email (إجباري)
+
+WhatsApp / SMS (Placeholder)
+
+Logic:
+
+Cloud Function يومية
+
+تجلب الجلسات:
+
+sessionDate = tomorrow
+
+reminderSent = false
+
+ترسل رسالة
+
+تحدث reminderSent = true
+
+🧴 INVENTORY MANAGEMENT
+
+Products
+
+Stock
+
+Expiry Date
+
+Auto deduction بعد إكمال الجلسة
+
+تنبيه نقص المخزون
+
+🧑‍⚕️ CLIENT FILE
+
+الاسم
+
+الهاتف
+
+الملاحظات الطبية
+
+سجل الجلسات
+
+ملاحظات الطبيب
+
+📊 DASHBOARD
+Admin Dashboard:
+
+جلسات اليوم
+
+جلسات الغد
+
+تنبيهات
+
+مخزون منخفض
+
+إحصائيات شهرية
+
+🗃 FIRESTORE COLLECTIONS
+users
+clients
+appointments
+services
+inventory
+inventory_logs
+reminders
+
+🎨 UI / UX
+
+Luxury Clinic Style
+
+ألوان: أبيض + وردي فاتح + ذهبي
+
+Cards + Tables
+
+RTL
+
+Responsive
+
+🔐 SECURITY
+
+Firebase Auth
+
+Firestore Rules حسب الدور
+
+Validation في JS
+
+⚠️ RULES
+
+لا placeholders
+
+كل ميزة تعمل فعليًا
+
+كود واضح ومنظم
+
+فصل الملفات
+
+✅ DELIVERABLES
+
+index.html (Dashboard)
+
+login.html
+
+appointments.html
+
+inventory.html
+
+clients.html
+
+css/style.css
+
+js/
+
+auth.js
+
+appointments.js
+
+reminders.js
+
+inventory.js
+
+firebase/
+
+firebase-config.js
+
+functions/
+
+🔥 END OF PROMPT
+🧠 الآن المهم: منطق التذكير (كود فعلي)
+📁 Firebase Cloud Function (Node.js)
+const functions = require("firebase-functions");
+const admin = require("firebase-admin");
+admin.initializeApp();
+
+exports.sendTomorrowReminders = functions.pubsub
+  .schedule("0 9 * * *")
+  .timeZone("Asia/Baghdad")
+  .onRun(async () => {
+
+    const db = admin.firestore();
+
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+
+    const afterTomorrow = new Date(tomorrow);
+    afterTomorrow.setDate(afterTomorrow.getDate() + 1);
+
+    const snapshot = await db.collection("appointments")
+      .where("sessionDate", ">=", tomorrow)
+      .where("sessionDate", "<", afterTomorrow)
+      .where("reminderSent", "==", false)
+      .get();
+
+    snapshot.forEach(async (doc) => {
+      const data = doc.data();
+
+      // 🔔 Email placeholder
+      console.log(`Reminder sent to ${data.clientName}`);
+
+      await doc.ref.update({
+        reminderSent: true
+      });
+    });
+
+    return null;
+  });
+
+✉️ نص رسالة التذكير (مثال)
+
+نذكّرك بموعد جلستك غدًا في مركز التجميل
+🕒 الوقت: 5:00 مساءً
+💉 الخدمة: ليزر
+📍 نتشرف بحضورك
