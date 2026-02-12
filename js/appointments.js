@@ -535,6 +535,7 @@ function setViewMode(mode) {
       if (searchClient) searchClient.addEventListener('input', function () { loadAppointments(); });
       if (searchClient) searchClient.addEventListener('keyup', function (e) { if (e.key === 'Enter') loadAppointments(); });
       btnAdd.addEventListener('click', function () { openModal(null); });
+      if (btnAddSession) btnAddSession.addEventListener('click', function () { addSessionRow(getDefaultDate(), ''); });
       form.addEventListener('submit', saveAppointment);
       btnCancelModal.addEventListener('click', closeModal);
       modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
